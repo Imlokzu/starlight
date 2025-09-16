@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyix - Custom PCs & Tech Solutions</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --secondary: #0088cc; /* A bit more muted */
+            --accent: #00ff9d;
+            --dark-bg: #000000;
+            --card-bg: rgba(255, 255, 255, 0.05); /* Key for glassmorphism */
+            --text-light: #ffffff;
+            --text-muted: #bbbbbb; /* Lighter for better contrast */
+            --osmo-red: #ff3b30;
+            --osmo-orange: #ff9500;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 0;
+            /* New background for a subtle texture */
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        /* Navigation */
+        nav {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+        }
+        .nav-links a:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary);
+            color: black;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        .auth-btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: black;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+        /* Hero Section */
+        .hero {
+            padding: 5rem 2rem;
+            text-align: center;
+            /* Remove the gradient background and use the abstract shape instead */
+            background: none;
+            position: relative;
+            z-index: 1;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            /* Make text stand out against the abstract shape */
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--text-muted);
+        }
+        .hero-btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: black;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .hero-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.5);
+        }
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        /* Featured Products */
+        .section-title {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 212, 255, 0.3);
+        }
+        .product-image {
+            height: 200px;
+            background: linear-gradient(45deg, #111111, #000000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        .product-info {
+            padding: 1.5rem;
+        }
+        .product-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        .product-specs {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: black;
+        }
+        .btn-secondary {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+        /* AI Chat */
+        .ai-chat-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 70vh;
+        }
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .message {
+            max-width: 85%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user-message {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        .ai-message {
+            background: rgba(30, 30, 30, 0.8);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .user-message .message-header {
+            color: #000000;
+        }
+        .ai-message .message-header {
+            color: var(--primary);
+        }
+        .message-header i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        .input-area {
+            display: flex;
+            padding: 20px;
+            background: rgba(20, 20, 20, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            flex-direction: column;
+            gap: 15px;
+        }
+        .image-upload-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .image-upload-btn {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .image-upload-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .text-input {
+            display: flex;
+            gap: 15px;
+        }
+        .text-input input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(30, 30, 30, 0.8);
+            color: var(--text-light);
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .text-input button {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: black;
+            border: none;
+            border-radius: 30px;
+            padding: 0 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .text-input button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: var(--primary);
+            margin-left: 2px;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .footer-section p, .footer-section a {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 212, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        .newsletter input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 30, 30, 0.8);
+            color: var(--text-light);
+        }
+        .newsletter button {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: black;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .newsletter button:hover {
+            transform: translateY(-2px);
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 30, 30, 0.8);
+            color: var(--text-light);
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .btn-block {
+            width: 100%;
+        }
+        /* Cart Animation */
+        @keyframes cartAdd {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .cart-icon.animate {
+            animation: cartAdd 0.5s ease;
+        }
+        /* Product Page */
+        .product-page {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        .product-gallery {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .main-image {
+            height: 400px;
+            background: linear-gradient(45deg, #111111, #000000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: var(--primary);
+            border-radius: 16px;
+        }
+        .thumbnails {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .thumbnail {
+            height: 100px;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .product-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .product-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .product-specs-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .spec-label {
+            color: var(--text-muted);
+        }
+        .spec-value {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        .product-price-large {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50%;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .quantity-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: var(--text-light);
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        .upgrade-options {
+            margin: 2rem 0;
+        }
+        .upgrade-options h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .upgrade-option {
+            margin-bottom: 1rem;
+        }
+        .upgrade-option label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+        .upgrade-option select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 30, 30, 0.8);
+            color: var(--text-light);
+        }
+        .breadcrumb {
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+        }
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .text-input {
+                flex-direction: column;
+            }
+            .text-input button {
+                padding: 12px;
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+            .product-specs-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Cyix</div>
+            <div class="nav-links">
+                <a href="#" id="homeLink"><i class="fas fa-home"></i> Home</a>
+                <a href="#"><i class="fas fa-desktop"></i> Products</a>
+                <a href="#"><i class="fas fa-info-circle"></i> About</a>
+                <a href="#"><i class="fas fa-map-marker-alt"></i> Locations</a>
+            </div>
+            <div class="nav-icons">
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+                <button class="auth-btn" id="authBtn">Login</button>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content (Homepage) -->
+    <div id="mainContent">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Custom PCs, Pre-Built Systems, and Upgrades</h1>
+            <p>Build your dream machine with our expertly crafted systems or upgrade your existing setup with premium components.</p>
+            <button class="hero-btn"><i class="fas fa-shopping-cart"></i> Shop Now</button>
+        </section>
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="content-area">
+                <h2 class="section-title">Featured Products</h2>
+                <div class="products-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Quantum Gaming PC</h3>
+                            <p class="product-specs">RTX 4080, Intel i9, 32GB RAM, 2TB SSD</p>
+                            <div class="product-price">$2,499</div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart" data-product="Quantum Gaming PC" data-price="2499">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                                <button class="btn btn-secondary ai-overview"
+                                        data-name="Quantum Gaming PC"
+                                        data-desc="High-performance gaming rig with RTX 4080 and Intel i9"
+                                        data-image="https://placehold.co/300x200/000000/00d4ff?text=Quantum+PC">
+                                    <i class="fas fa-brain"></i> AI Overview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Workstation Pro</h3>
+                            <p class="product-specs">RTX 4090, AMD Ryzen 9, 64GB RAM, 4TB SSD</p>
+                            <div class="product-price">$3,299</div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart" data-product="Workstation Pro" data-price="3299">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                                <button class="btn btn-secondary ai-overview"
+                                        data-name="Workstation Pro"
+                                        data-desc="Professional workstation for content creators and developers"
+                                        data-image="https://placehold.co/300x200/000000/00d4ff?text=Workstation+Pro">
+                                    <i class="fas fa-brain"></i> AI Overview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 3 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-memory"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">32GB DDR4 RAM</h3>
+                            <p class="product-specs">3200MHz CL16, RGB Lighting</p>
+                            <div class="product-price">$149</div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart" data-product="32GB DDR4 RAM" data-price="149">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                                <button class="btn btn-secondary ai-overview"
+                                        data-name="32GB DDR4 RAM"
+                                        data-desc="High-speed memory for gaming and productivity"
+                                        data-image="https://placehold.co/300x200/000000/00d4ff?text=32GB+RAM">
+                                    <i class="fas fa-brain"></i> AI Overview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 4 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-hdd"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">2TB NVMe SSD</h3>
+                            <p class="product-specs">PCIe 4.0, 7000MB/s Read</p>
+                            <div class="product-price">$199</div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart" data-product="2TB NVMe SSD" data-price="199">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                                <button class="btn btn-secondary ai-overview"
+                                        data-name="2TB NVMe SSD"
+                                        data-desc="Lightning-fast storage for your system"
+                                        data-image="https://placehold.co/300x200/000000/00d4ff?text=2TB+SSD">
+                                    <i class="fas fa-brain"></i> AI Overview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- AI Chat Interface -->
+            <div class="ai-chat-container">
+                <div class="chat-history" id="chatHistory">
+                    <div class="message ai-message">
+                        <div class="message-header">
+                            <i class="fas fa-robot"></i> Cyix AI Assistant
+                        </div>
+                        <div class="message-content">
+                            Welcome to Cyix! I'm your AI assistant powered by Qwen. Ask me anything about tech products, get recommendations, or analyze images. I'll stream my responses in real-time with rich formatting.
+                        </div>
+                    </div>
+                </div>
+                <div class="input-area">
+                    <div class="image-upload-container">
+                        <label for="imageUpload" class="image-upload-btn">
+                            <i class="fas fa-image"></i>
+                        </label>
+                        <input type="file" id="imageUpload" accept="image/*">
+                    </div>
+                    <div class="text-input">
+                        <input type="text" id="userInput" placeholder="Ask me anything about tech products...">
+                        <button id="sendButton">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Product Page (Hidden by default) -->
+    <div id="productPage" style="display: none;">
+        <div class="product-page">
+            <div class="breadcrumb">
+                <a href="#" id="backToHome">Home</a> / <span id="breadcrumbProduct">Product Name</span>
+            </div>
+            <div class="product-container">
+                <div class="product-gallery">
+                    <div class="main-image">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="thumbnails">
+                        <div class="thumbnail"><i class="fas fa-microchip"></i></div>
+                        <div class="thumbnail"><i class="fas fa-memory"></i></div>
+                        <div class="thumbnail"><i class="fas fa-hdd"></i></div>
+                        <div class="thumbnail"><i class="fas fa-server"></i></div>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <h1 class="product-title" id="productTitle">Quantum Gaming PC</h1>
+                    <p class="product-description" id="productDescription">
+                        The Quantum Gaming PC is our flagship gaming machine designed for the most demanding gamers.
+                        Featuring the latest NVIDIA RTX 4080 graphics card and Intel i9 processor, this system delivers
+                        exceptional performance for 4K gaming, content creation, and productivity tasks.
+                    </p>
+                    <div class="product-specs-list">
+                        <div class="spec-item">
+                            <span class="spec-label">Processor:</span>
+                            <span class="spec-value">Intel Core i9-13900K</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Graphics:</span>
+                            <span class="spec-value">NVIDIA GeForce RTX 4080</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Memory:</span>
+                            <span class="spec-value">32GB DDR4-3200</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Storage:</span>
+                            <span class="spec-value">2TB NVMe SSD</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Motherboard:</span>
+                            <span class="spec-value">ASUS ROG Strix Z790</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Cooling:</span>
+                            <span class="spec-value">Custom Liquid Cooling</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Power Supply:</span>
+                            <span class="spec-value">1000W 80+ Gold</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Case:</span>
+                            <span class="spec-value">Fractal Design Define 7</span>
+                        </div>
+                    </div>
+                    <div class="product-price-large" id="productPrice">$2,499</div>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" id="decreaseQty">-</button>
+                        <input type="number" class="quantity-input" id="quantity" value="1" min="1">
+                        <button class="quantity-btn" id="increaseQty">+</button>
+                    </div>
+                    <button class="btn btn-primary" id="addToCartBtn">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    <button class="btn btn-secondary" id="aiOverviewBtn">
+                        <i class="fas fa-brain"></i> AI Overview
+                    </button>
+                    <div class="upgrade-options">
+                        <h3>Upgrade Options</h3>
+                        <div class="upgrade-option">
+                            <label for="gpuUpgrade">Graphics Card Upgrade</label>
+                            <select id="gpuUpgrade">
+                                <option value="0">RTX 4080 (Included)</option>
+                                <option value="300">RTX 4090 (+$300)</option>
+                            </select>
+                        </div>
+                        <div class="upgrade-option">
+                            <label for="ramUpgrade">RAM Upgrade</label>
+                            <select id="ramUpgrade">
+                                <option value="0">32GB (Included)</option>
+                                <option value="100">64GB (+$100)</option>
+                            </select>
+                        </div>
+                        <div class="upgrade-option">
+                            <label for="storageUpgrade">Storage Upgrade</label>
+                            <select id="storageUpgrade">
+                                <option value="0">2TB SSD (Included)</option>
+                                <option value="150">4TB SSD (+$150)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAuthModal">&times;</span>
+            <h2>Login to Your Account</h2>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-block" id="loginBtn">Login</button>
+                <button class="btn btn-secondary btn-block" id="switchToRegister">Register</button>
+            </div>
+        </div>
+    </div>
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeRegisterModal">&times;</span>
+            <h2>Create New Account</h2>
+            <div class="form-group">
+                <label for="regName">Full Name</label>
+                <input type="text" id="regName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="regEmail">Email Address</label>
+                <input type="email" id="regEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Password</label>
+                <input type="password" id="regPassword" placeholder="Create a password">
+            </div>
+            <div class="form-group">
+                <label for="regConfirmPassword">Confirm Password</label>
+                <input type="password" id="regConfirmPassword" placeholder="Confirm your password">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-block" id="registerBtn">Register</button>
+                <button class="btn btn-secondary btn-block" id="switchToLogin">Back to Login</button>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Cyix</h3>
+                <p>Your trusted partner for custom PCs, pre-built systems, and tech accessories.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#">Home</a>
+                <a href="#">Products</a>
+                <a href="#">About</a>
+                <a href="#">Locations</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> support@cyix.com</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-map-marker-alt"></i> San Francisco, CA</p>
+            </div>
+            <div class="footer-section newsletter">
+                <h3>Newsletter</h3>
+                <p>Subscribe for updates and offers</p>
+                <input type="email" placeholder="Your email address">
+                <button>Subscribe</button>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Cyix. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configure marked.js for Markdown parsing
+            marked.setOptions({
+                breaks: true,
+                gfm: true,
+                highlight: function(code, lang) {
+                    return code;
+                }
+            });
+            // DOM Elements
+            const chatHistory = document.getElementById('chatHistory');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            const imageUpload = document.getElementById('imageUpload');
+            const cartIcon = document.getElementById('cartIcon');
+            const cartCount = document.getElementById('cartCount');
+            const authBtn = document.getElementById('authBtn');
+            const authModal = document.getElementById('authModal');
+            const registerModal = document.getElementById('registerModal');
+            const closeAuthModal = document.getElementById('closeAuthModal');
+            const closeRegisterModal = document.getElementById('closeRegisterModal');
+            const switchToRegister = document.getElementById('switchToRegister');
+            const switchToLogin = document.getElementById('switchToLogin');
+            const aiOverviewButtons = document.querySelectorAll('.ai-overview');
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            const mainContent = document.getElementById('mainContent');
+            const productPage = document.getElementById('productPage');
+            const backToHome = document.getElementById('backToHome');
+            const homeLink = document.getElementById('homeLink');
+            const productCards = document.querySelectorAll('.product-card');
+            // Product page elements
+            const productTitle = document.getElementById('productTitle');
+            const productDescription = document.getElementById('productDescription');
+            const productPrice = document.getElementById('productPrice');
+            const breadcrumbProduct = document.getElementById('breadcrumbProduct');
+            const addToCartBtn = document.getElementById('addToCartBtn');
+            const aiOverviewBtn = document.getElementById('aiOverviewBtn');
+            const decreaseQty = document.getElementById('decreaseQty');
+            const increaseQty = document.getElementById('increaseQty');
+            const quantityInput = document.getElementById('quantity');
+            // Shopping cart
+            let cart = [];
+            // Current streaming request
+            let currentStream = null;
+            // Current product data
+            let currentProduct = null;
+            // Function to add a message to the chat
+            function addMessage(content, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+                const messageHeader = document.createElement('div');
+                messageHeader.className = 'message-header';
+                messageHeader.innerHTML = isUser
+                    ? '<i class="fas fa-user"></i> You'
+                    : '<i class="fas fa-robot"></i> Cyix AI Assistant';
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.innerHTML = content;
+                messageDiv.appendChild(messageHeader);
+                messageDiv.appendChild(messageContent);
+                chatHistory.appendChild(messageDiv);
+                // Scroll to bottom
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+                return { messageDiv, messageContent };
+            }
+            // Function to stream AI response using Puter.js with rich text formatting
+            async function streamAIResponse(prompt, messageContent, messageDiv, imageFile = null) {
+                try {
+                    // Determine the appropriate model based on the prompt
+                    let model = "qwen/qwen3-max";
+                    if (prompt.toLowerCase().includes("code") || prompt.toLowerCase().includes("program")) {
+                        model = "qwen/qwen3-coder";
+                    } else if (imageFile || prompt.toLowerCase().includes("image") || prompt.toLowerCase().includes("picture")) {
+                        model = "qwen/qwen2.5-vl-7b-instruct";
+                    }
+                    // Create streaming request with Puter.js
+                    let response;
+                    if (imageFile) {
+                        // Handle image analysis
+                        response = await puter.ai.chat(
+                            [{ role: "user", content: [
+                                { type: "text", text: prompt },
+                                { type: "image_url", image_url: { url: imageFile } }
+                            ]}],
+                            { model: model, stream: true }
+                        );
+                    } else {
+                        // Handle text-only query
+                        response = await puter.ai.chat(
+                            prompt,
+                            { model: model, stream: true }
+                        );
+                    }
+                    // Create typing text element
+                    const typingText = document.createElement('span');
+                    messageContent.appendChild(typingText);
+                    // Create cursor
+                    const cursor = document.createElement('span');
+                    cursor.className = 'cursor';
+                    messageContent.appendChild(cursor);
+                    // Buffer to accumulate text
+                    let buffer = '';
+                    // Process the stream
+                    for await (const part of response) {
+                        // Add content to buffer
+                        if (part?.text) {
+                            buffer += part.text;
+                            // Parse and render formatted text
+                            typingText.innerHTML = marked.parse(buffer);
+                            // Scroll to bottom
+                            chatHistory.scrollTop = chatHistory.scrollHeight;
+                        }
+                    }
+                    // Clean up when finished
+                    cursor.remove();
+                    currentStream = null;
+                } catch (error) {
+                    console.error('Error:', error);
+                    messageContent.innerHTML = `<span style="color: #ff6b6b;">Error: ${error.message}</span>`;
+                    currentStream = null;
+                }
+            }
+            // Function to handle user text message
+            function handleUserMessage(message) {
+                if (!message.trim()) return;
+                // Add user message to chat
+                addMessage(message, true);
+                // Clear input
+                userInput.value = '';
+                // Add AI message container
+                const { messageDiv, messageContent } = addMessage('');
+                // Store reference to current stream
+                currentStream = true;
+                // Start streaming AI response
+                streamAIResponse(message, messageContent, messageDiv);
+            }
+            // Function to handle image upload
+            function handleImageUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                // Check if file is an image
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file.');
+                    return;
+                }
+                // Add user message to chat
+                addMessage(`Uploaded image: ${file.name}`, true);
+                // Add AI message container
+                const { messageDiv, messageContent } = addMessage('');
+                // Store reference to current stream
+                currentStream = true;
+                // Convert image to base64 for AI processing
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Start streaming AI response with image
+                    streamAIResponse("Analyze this image", messageContent, messageDiv, e.target.result);
+                };
+                reader.readAsDataURL(file);
+                // Reset file input
+                imageUpload.value = '';
+            }
+            // Function to add item to cart
+            function addToCart(productName, price, quantity = 1) {
+                for (let i = 0; i < quantity; i++) {
+                    cart.push({ name: productName, price: price });
+                }
+                updateCartCount();
+                // Add animation to cart icon
+                cartIcon.classList.add('animate');
+                setTimeout(() => {
+                    cartIcon.classList.remove('animate');
+                }, 500);
+            }
+            // Function to update cart count
+            function updateCartCount() {
+                cartCount.textContent = cart.length;
+            }
+            // Function to handle AI Overview
+            function handleAIOverview(name, description, image) {
+                const prompt = `Please provide a detailed overview of the ${name}. Product description: ${description}.`;
+                // Add user message to chat
+                addMessage(prompt, true);
+                // Add AI message container
+                const { messageDiv, messageContent } = addMessage('');
+                // Store reference to current stream
+                currentStream = true;
+                // Start streaming AI response
+                streamAIResponse(prompt, messageContent, messageDiv);
+            }
+            // Function to show product page
+            function showProductPage(productData) {
+                currentProduct = productData;
+                productTitle.textContent = productData.name;
+                productDescription.textContent = productData.description;
+                productPrice.textContent = `$${productData.price}`;
+                breadcrumbProduct.textContent = productData.name;
+                mainContent.style.display = 'none';
+                productPage.style.display = 'block';
+            }
+            // Function to show homepage
+            function showHomepage() {
+                mainContent.style.display = 'block';
+                productPage.style.display = 'none';
+            }
+            // Event listeners
+            sendButton.addEventListener('click', function() {
+                const message = userInput.value.trim();
+                handleUserMessage(message);
+            });
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const message = userInput.value.trim();
+                    handleUserMessage(message);
+                }
+            });
+            imageUpload.addEventListener('change', handleImageUpload);
+            // Add to cart buttons (homepage)
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.getAttribute('data-product');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    addToCart(productName, price);
+                });
+            });
+            // AI Overview buttons (homepage)
+            aiOverviewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const name = this.getAttribute('data-name');
+                    const description = this.getAttribute('data-desc');
+                    const image = this.getAttribute('data-image');
+                    handleAIOverview(name, description, image);
+                });
+            });
+            // Auth modal
+            authBtn.addEventListener('click', function() {
+                authModal.style.display = 'flex';
+            });
+            closeAuthModal.addEventListener('click', function() {
+                authModal.style.display = 'none';
+            });
+            closeRegisterModal.addEventListener('click', function() {
+                registerModal.style.display = 'none';
+            });
+            switchToRegister.addEventListener('click', function() {
+                authModal.style.display = 'none';
+                registerModal.style.display = 'flex';
+            });
+            switchToLogin.addEventListener('click', function() {
+                registerModal.style.display = 'none';
+                authModal.style.display = 'flex';
+            });
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === authModal) {
+                    authModal.style.display = 'none';
+                }
+                if (event.target === registerModal) {
+                    registerModal.style.display = 'none';
+                }
+            });
+            // Product page events
+            backToHome.addEventListener('click', function(e) {
+                e.preventDefault();
+                showHomepage();
+            });
+            homeLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showHomepage();
+            });
+            // Product card clicks
+            productCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('add-to-cart') ||
+                        e.target.classList.contains('ai-overview') ||
+                        e.target.closest('.add-to-cart') ||
+                        e.target.closest('.ai-overview')) {
+                        return;
+                    }
+                    const productName = this.querySelector('.product-name').textContent;
+                    const productPrice = parseFloat(this.querySelector('.product-price').textContent.replace('$', '').replace(',', ''));
+                    const productDesc = this.querySelector('.product-specs').textContent;
+                    showProductPage({
+                        name: productName,
+                        price: productPrice,
+                        description: `This is a detailed description of the ${productName}. ${productDesc}. This high-performance system is designed for enthusiasts who demand the best in computing power and reliability.`
+                    });
+                });
+            });
+            // Product page buttons
+            addToCartBtn.addEventListener('click', function() {
+                const quantity = parseInt(quantityInput.value);
+                if (currentProduct) {
+                    addToCart(currentProduct.name, currentProduct.price, quantity);
+                }
+            });
+            aiOverviewBtn.addEventListener('click', function() {
+                if (currentProduct) {
+                    handleAIOverview(currentProduct.name, currentProduct.description, '');
+                }
+            });
+            // Quantity controls
+            decreaseQty.addEventListener('click', function() {
+                let qty = parseInt(quantityInput.value);
+                if (qty > 1) {
+                    quantityInput.value = qty - 1;
+                }
+            });
+            increaseQty.addEventListener('click', function() {
+                let qty = parseInt(quantityInput.value);
+                quantityInput.value = qty + 1;
+            });
+            quantityInput.addEventListener('change', function() {
+                let qty = parseInt(this.value);
+                if (isNaN(qty) || qty < 1) {
+                    this.value = 1;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
